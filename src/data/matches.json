@@ -1,0 +1,68 @@
+[
+  {
+    "id": "1",
+    "date": "2023-03-31",
+    "team1": "Chennai Super Kings",
+    "team2": "Gujarat Titans",
+    "winner": "Gujarat Titans",
+    "city": "Ahmedabad",
+    "result": "wickets",
+    "result_margin": 5,
+    "target_runs": 179
+  },
+  {
+    "id": "2",
+    "date": "2023-04-01",
+    "team1": "Punjab Kings",
+    "team2": "Kolkata Knight Riders",
+    "winner": "Punjab Kings",
+    "city": "Mohali",
+    "result": "runs",
+    "result_margin": 7,
+    "target_runs": 192
+  },
+  {
+    "id": "3",
+    "date": "2023-04-01",
+    "team1": "Lucknow Super Giants",
+    "team2": "Delhi Capitals",
+    "winner": "Lucknow Super Giants",
+    "city": "Lucknow",
+    "result": "runs",
+    "result_margin": 50,
+    "target_runs": 194
+  },
+  {
+    "id": "4",
+    "date": "2023-04-02",
+    "team1": "Rajasthan Royals",
+    "team2": "Sunrisers Hyderabad",
+    "winner": "Rajasthan Royals",
+    "city": "Hyderabad",
+    "result": "runs",
+    "result_margin": 72,
+    "target_runs": 204
+  },
+  {
+    "id": "5",
+    "date": "2023-04-02",
+    "team1": "Mumbai Indians",
+    "team2": "Royal Challengers Bangalore",
+    "winner": "Royal Challengers Bangalore",
+    "city": "Bangalore",
+    "result": "wickets",
+    "result_margin": 8,
+    "target_runs": 172
+  },
+  {
+    "id": "2230fbfa-2cbe-432d-aef1-12a9cb9fb7ec",
+    "date": "2023-03-04",
+    "team1": "RCB",
+    "team2": "MI",
+    "winner": "RCB",
+    "city": "Mumbai",
+    "result": "runs",
+    "result_margin": 230,
+    "target_runs": 232
+  }
+]

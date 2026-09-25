@@ -1,69 +1,149 @@
-import Image from "next/image";
+'use client';
 
-export default function Home() {
+import { useState, useEffect } from 'react';
+import { 
+  BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip as RechartsTooltip, ResponsiveContainer, Cell, PieChart, Pie
+} from 'recharts';
+import { Trophy, Calendar, MapPin, Activity } from 'lucide-react';
+import Link from 'next/link';
+
+export default function Dashboard() {
+  const [matches, setMatches] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    fetchMatches();
+  }, []);
+
+  const fetchMatches = async () => {
+    try {
+      const res = await fetch('/api/matches');
+      const data = await res.json();
+      setMatches(data);
+    } catch (error) {
+      console.error('Failed to fetch matches:', error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const getYear = (dateString) => {
+    return dateString ? dateString.substring(0, 4) : 'Unknown';
+  };
+
+  // Summary stats
+  const totalMatches = matches.length;
+  const uniqueTeams = new Set();
+  const uniqueCities = new Set();
+  const uniqueSeasons = new Set();
+  const winsByTeam = {};
+
+  matches.forEach(m => {
+    if (m.team1) uniqueTeams.add(m.team1);
+    if (m.team2) uniqueTeams.add(m.team2);
+    if (m.city) uniqueCities.add(m.city);
+    if (m.date) uniqueSeasons.add(getYear(m.date));
+    
+    if (m.winner) {
+      winsByTeam[m.winner] = (winsByTeam[m.winner] || 0) + 1;
+    }
+  });
+
+  const mostSuccessfulTeam = Object.keys(winsByTeam).reduce((a, b) => winsByTeam[a] > winsByTeam[b] ? a : b, 'N/A');
+  const latestSeason = Array.from(uniqueSeasons).sort().reverse()[0] || 'N/A';
+
+  const chartData = Object.keys(winsByTeam)
+    .map(team => ({ name: team, wins: winsByTeam[team] }))
+    .sort((a, b) => b.wins - a.wins);
+
+  const colors = ['#6366f1', '#8b5cf6', '#ec4899', '#f43f5e', '#f97316'];
+
+  // Matches by Season
+  const matchesBySeasonMap = {};
+  matches.forEach(m => {
+    const s = getYear(m.date);
+    matchesBySeasonMap[s] = (matchesBySeasonMap[s] || 0) + 1;
+  });
+  const seasonChartData = Object.keys(matchesBySeasonMap)
+    .map(season => ({ name: season, matches: matchesBySeasonMap[season] }))
+    .sort((a, b) => a.name.localeCompare(b.name));
+
+  if (loading) {
+    return <div className="flex h-64 items-center justify-center"><div className="w-10 h-10 border-4 border-indigo-500 border-t-transparent rounded-full animate-spin"></div></div>;
+  }
+
   return (
-    <div className="flex flex-col flex-1 items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex flex-1 w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert h-5 w-[100px]"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the{" "}
-            <code className="rounded bg-black/[.06] px-1.5 py-0.5 font-mono text-[0.9em] dark:bg-white/[.08]">
-              page.js
-            </code>{" "}
-            file.
-          </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Learning
-            </a>{" "}
-            center.
-          </p>
+    <div className="space-y-8 animate-in fade-in duration-500">
+      <header className="flex justify-between items-end">
+        <div>
+          <h1 className="text-3xl font-bold">Main Dashboard</h1>
+          <p className="text-slate-400 mt-2">Overview of IPL historical data</p>
         </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert h-[14px] w-4"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={14}
-            />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
+      </header>
+
+      {/* Summary Cards */}
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div className="bg-slate-800 p-6 rounded-2xl border border-slate-700 shadow-sm flex items-center gap-4">
+          <div className="p-3 bg-blue-500/10 text-blue-400 rounded-xl"><Activity size={24} /></div>
+          <div><p className="text-slate-400 text-sm">Total Matches</p><h2 className="text-2xl font-bold">{totalMatches}</h2></div>
         </div>
-      </main>
+        <div className="bg-slate-800 p-6 rounded-2xl border border-slate-700 shadow-sm flex items-center gap-4">
+          <div className="p-3 bg-indigo-500/10 text-indigo-400 rounded-xl"><Trophy size={24} /></div>
+          <div><p className="text-slate-400 text-sm">Most Successful</p><h2 className="text-lg font-bold leading-tight">{mostSuccessfulTeam}</h2></div>
+        </div>
+        <div className="bg-slate-800 p-6 rounded-2xl border border-slate-700 shadow-sm flex items-center gap-4">
+          <div className="p-3 bg-pink-500/10 text-pink-400 rounded-xl"><MapPin size={24} /></div>
+          <div><p className="text-slate-400 text-sm">Venues/Cities</p><h2 className="text-2xl font-bold">{uniqueCities.size}</h2></div>
+        </div>
+        <div className="bg-slate-800 p-6 rounded-2xl border border-slate-700 shadow-sm flex items-center gap-4">
+          <div className="p-3 bg-emerald-500/10 text-emerald-400 rounded-xl"><Trophy size={24} /></div>
+          <div><p className="text-slate-400 text-sm">Total Teams</p><h2 className="text-2xl font-bold">{uniqueTeams.size}</h2></div>
+        </div>
+        <div className="bg-slate-800 p-6 rounded-2xl border border-slate-700 shadow-sm flex items-center gap-4">
+          <div className="p-3 bg-orange-500/10 text-orange-400 rounded-xl"><Calendar size={24} /></div>
+          <div><p className="text-slate-400 text-sm">Total Seasons</p><h2 className="text-2xl font-bold">{uniqueSeasons.size}</h2></div>
+        </div>
+        <div className="bg-slate-800 p-6 rounded-2xl border border-slate-700 shadow-sm flex items-center gap-4">
+          <div className="p-3 bg-purple-500/10 text-purple-400 rounded-xl"><Calendar size={24} /></div>
+          <div><p className="text-slate-400 text-sm">Latest Season</p><h2 className="text-2xl font-bold">{latestSeason}</h2></div>
+        </div>
+      </div>
+
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+        {/* Wins by Team */}
+        <div className="bg-slate-800 p-6 rounded-2xl border border-slate-700 shadow-sm h-[400px] flex flex-col">
+          <h3 className="text-lg font-semibold mb-6">Wins by Team</h3>
+          <div className="flex-1 w-full h-full min-h-0">
+            <ResponsiveContainer width="100%" height="100%">
+              <BarChart data={chartData} layout="vertical" margin={{ left: 10, right: 30, top: 0, bottom: 0 }}>
+                <CartesianGrid strokeDasharray="3 3" stroke="#334155" horizontal={true} vertical={false} />
+                <XAxis type="number" stroke="#94a3b8" fontSize={12} />
+                <YAxis dataKey="name" type="category" width={100} stroke="#94a3b8" fontSize={12} />
+                <RechartsTooltip cursor={{fill: '#334155'}} contentStyle={{ backgroundColor: '#1e293b', border: '1px solid #334155', borderRadius: '8px' }} />
+                <Bar dataKey="wins" radius={[0, 4, 4, 0]}>
+                  {chartData.map((entry, index) => <Cell key={`cell-${index}`} fill={colors[index % colors.length]} />)}
+                </Bar>
+              </BarChart>
+            </ResponsiveContainer>
+          </div>
+        </div>
+
+        {/* Matches by Season */}
+        <div className="bg-slate-800 p-6 rounded-2xl border border-slate-700 shadow-sm h-[400px] flex flex-col">
+          <h3 className="text-lg font-semibold mb-6">Matches by Season</h3>
+          <div className="flex-1 w-full h-full min-h-0">
+            <ResponsiveContainer width="100%" height="100%">
+              <BarChart data={seasonChartData} margin={{ left: -20, right: 10, top: 0, bottom: 0 }}>
+                <CartesianGrid strokeDasharray="3 3" stroke="#334155" vertical={false} />
+                <XAxis dataKey="name" stroke="#94a3b8" fontSize={12} />
+                <YAxis stroke="#94a3b8" fontSize={12} />
+                <RechartsTooltip cursor={{fill: '#334155'}} contentStyle={{ backgroundColor: '#1e293b', border: '1px solid #334155', borderRadius: '8px' }} />
+                <Bar dataKey="matches" fill="#3b82f6" radius={[4, 4, 0, 0]} />
+              </BarChart>
+            </ResponsiveContainer>
+          </div>
+        </div>
+      </div>
     </div>
   );
 }
