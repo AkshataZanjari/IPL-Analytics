@@ -46,6 +46,20 @@ export default function ManageMatches() {
     setIsModalOpen(true);
   };
 
+  const extractZodMessage = (details) => {
+    if (!details || typeof details !== 'object') return null;
+    if (details._errors && details._errors.length > 0) {
+      return details._errors[0];
+    }
+    for (const key of Object.keys(details)) {
+      if (key !== '_errors') {
+        const msg = extractZodMessage(details[key]);
+        if (msg) return msg;
+      }
+    }
+    return null;
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (formData.team1 === formData.team2) {
@@ -68,7 +82,14 @@ export default function ManageMatches() {
         setIsModalOpen(false);
         fetchMatches(); // refresh
       } else {
-        showNotification('error', 'Something went wrong');
+        try {
+          const errorBody = await res.json();
+          const zodMsg = extractZodMessage(errorBody.details);
+          const finalMsg = zodMsg || errorBody.error || 'Something went wrong';
+          showNotification('error', finalMsg);
+        } catch (e) {
+          showNotification('error', 'Something went wrong');
+        }
       }
     } catch (error) {
       showNotification('error', 'Failed to save match');
