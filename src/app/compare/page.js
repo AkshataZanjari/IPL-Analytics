@@ -64,23 +64,23 @@ export default function CompareTeams() {
     <div className="space-y-6 animate-in fade-in duration-500">
       <header>
         <h1 className="text-3xl font-bold">Team Comparison</h1>
-        <p className="text-slate-400 mt-2">Compare head-to-head records and overall statistics</p>
+        <p className="text-slate-500 mt-2">Compare head-to-head records and overall statistics</p>
       </header>
 
       {/* Selectors */}
-      <div className="bg-slate-800 p-6 rounded-2xl border border-slate-700 shadow-sm flex flex-col md:flex-row items-center gap-6 justify-between">
+      <div className="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm flex flex-col md:flex-row items-center gap-6 justify-between">
         <div className="w-full md:w-5/12">
           <label className="block text-xs font-medium text-blue-400 mb-1 uppercase tracking-wider">Team 1</label>
-          <select value={teamA} onChange={e => setTeamA(e.target.value)} className="w-full bg-slate-900 border-2 border-blue-500/30 rounded-xl p-3 focus:ring-2 focus:ring-blue-500 outline-none text-lg">
+          <select value={teamA} onChange={e => setTeamA(e.target.value)} className="w-full bg-slate-50 border-2 border-blue-500/30 rounded-xl p-3 focus:ring-2 focus:ring-blue-500 outline-none text-lg">
             {teams.map(t => <option key={t} value={t} disabled={t === teamB}>{t}</option>)}
           </select>
         </div>
-        <div className="bg-slate-700/50 p-4 rounded-full flex-shrink-0">
-          <Swords size={28} className="text-slate-400" />
+        <div className="bg-slate-100 p-4 rounded-full flex-shrink-0">
+          <Swords size={28} className="text-slate-500" />
         </div>
         <div className="w-full md:w-5/12">
           <label className="block text-xs font-medium text-pink-400 mb-1 uppercase tracking-wider text-right">Team 2</label>
-          <select value={teamB} onChange={e => setTeamB(e.target.value)} className="w-full bg-slate-900 border-2 border-pink-500/30 rounded-xl p-3 focus:ring-2 focus:ring-pink-500 outline-none text-lg text-right" dir="rtl">
+          <select value={teamB} onChange={e => setTeamB(e.target.value)} className="w-full bg-slate-50 border-2 border-pink-500/30 rounded-xl p-3 focus:ring-2 focus:ring-pink-500 outline-none text-lg text-right" dir="rtl">
             {teams.map(t => <option key={t} value={t} disabled={t === teamA}>{t}</option>)}
           </select>
         </div>
@@ -91,11 +91,11 @@ export default function CompareTeams() {
       ) : (
         <>
           {/* Head to Head Card */}
-          <div className="bg-slate-800 rounded-2xl border border-slate-700 shadow-sm overflow-hidden relative">
+          <div className="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden relative">
             <div className="absolute top-0 left-0 w-1/2 h-2 bg-blue-500"></div>
             <div className="absolute top-0 right-0 w-1/2 h-2 bg-pink-500"></div>
             <div className="p-8 text-center">
-              <h3 className="text-sm uppercase tracking-widest text-slate-400 font-semibold mb-6">Head to Head ({h2hMatches.length} Matches)</h3>
+              <h3 className="text-sm uppercase tracking-widest text-slate-500 font-semibold mb-6">Head to Head ({h2hMatches.length} Matches)</h3>
               <div className="flex justify-between items-center max-w-lg mx-auto">
                 <div className="text-center w-1/3">
                   <div className="text-6xl font-bold text-blue-400">{h2hTeamAWins}</div>
@@ -112,30 +112,30 @@ export default function CompareTeams() {
 
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
             {/* Overall Comparison Stats */}
-            <div className="bg-slate-800 p-6 rounded-2xl border border-slate-700 shadow-sm flex flex-col justify-center">
+            <div className="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm flex flex-col justify-center">
               <h3 className="text-lg font-semibold mb-6">Overall Statistics</h3>
               <div className="space-y-6">
                 <div>
-                  <div className="flex justify-between text-sm mb-2"><span className="text-slate-400">Total Matches</span></div>
+                  <div className="flex justify-between text-sm mb-2"><span className="text-slate-500">Total Matches</span></div>
                   <div className="flex items-center gap-4">
                     <div className="w-1/2 text-right font-medium text-blue-400">{statsA.played}</div>
-                    <div className="w-px h-6 bg-slate-700"></div>
+                    <div className="w-px h-6 bg-slate-200"></div>
                     <div className="w-1/2 text-left font-medium text-pink-400">{statsB.played}</div>
                   </div>
                 </div>
                 <div>
-                  <div className="flex justify-between text-sm mb-2"><span className="text-slate-400">Total Wins</span></div>
+                  <div className="flex justify-between text-sm mb-2"><span className="text-slate-500">Total Wins</span></div>
                   <div className="flex items-center gap-4">
                     <div className="w-1/2 text-right font-medium text-blue-400">{statsA.wins}</div>
-                    <div className="w-px h-6 bg-slate-700"></div>
+                    <div className="w-px h-6 bg-slate-200"></div>
                     <div className="w-1/2 text-left font-medium text-pink-400">{statsB.wins}</div>
                   </div>
                 </div>
                 <div>
-                  <div className="flex justify-between text-sm mb-2"><span className="text-slate-400">Win Rate</span></div>
+                  <div className="flex justify-between text-sm mb-2"><span className="text-slate-500">Win Rate</span></div>
                   <div className="flex items-center gap-4">
                     <div className="w-1/2 text-right font-medium text-blue-400">{statsA.winRate}%</div>
-                    <div className="w-px h-6 bg-slate-700"></div>
+                    <div className="w-px h-6 bg-slate-200"></div>
                     <div className="w-1/2 text-left font-medium text-pink-400">{statsB.winRate}%</div>
                   </div>
                 </div>
@@ -143,15 +143,15 @@ export default function CompareTeams() {
             </div>
 
             {/* Comparison Chart */}
-            <div className="bg-slate-800 p-6 rounded-2xl border border-slate-700 shadow-sm h-[350px] flex flex-col">
+            <div className="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm h-[350px] flex flex-col">
               <h3 className="text-lg font-semibold mb-4">Comparison Graph</h3>
               <div className="flex-1 w-full min-h-0">
                 <ResponsiveContainer width="100%" height="100%">
                   <BarChart data={compareData} margin={{ top: 10, right: 0, left: -20, bottom: 0 }}>
-                    <CartesianGrid strokeDasharray="3 3" stroke="#334155" vertical={false} />
-                    <XAxis dataKey="name" stroke="#94a3b8" fontSize={12} />
-                    <YAxis stroke="#94a3b8" fontSize={12} />
-                    <RechartsTooltip cursor={{fill: '#334155'}} contentStyle={{ backgroundColor: '#1e293b', border: '1px solid #334155', borderRadius: '8px' }} />
+                    <CartesianGrid strokeDasharray="3 3" stroke="#e2e8f0" vertical={false} />
+                    <XAxis dataKey="name" stroke="#64748b" fontSize={12} />
+                    <YAxis stroke="#64748b" fontSize={12} />
+                    <RechartsTooltip cursor={{fill: '#f1f5f9'}} contentStyle={{ backgroundColor: '#ffffff', border: '1px solid #e2e8f0', borderRadius: '8px' }} />
                     <Legend wrapperStyle={{ fontSize: '12px', paddingTop: '10px' }} />
                     <Bar dataKey={teamA} fill="#3b82f6" radius={[4, 4, 0, 0]} />
                     <Bar dataKey={teamB} fill="#ec4899" radius={[4, 4, 0, 0]} />

@@ -33,14 +33,14 @@ export default function LoginPage() {
 
   return (
     <div className="flex items-center justify-center min-h-[80vh] animate-in fade-in duration-500">
-      <div className="bg-slate-800 p-8 rounded-2xl border border-slate-700 shadow-xl w-full max-w-md">
+      <div className="bg-white p-8 rounded-2xl border border-slate-200 shadow-xl w-full max-w-md">
         <div className="flex justify-center mb-6">
           <div className="p-4 bg-indigo-500/10 text-indigo-400 rounded-full">
             <Lock size={32} />
           </div>
         </div>
         <h1 className="text-2xl font-bold text-center mb-2">Admin Login</h1>
-        <p className="text-slate-400 text-center text-sm mb-8">Sign in to manage IPL match records</p>
+        <p className="text-slate-500 text-center text-sm mb-8">Sign in to manage IPL match records</p>
 
         {error && (
           <div className="bg-red-900/50 border border-red-500/50 text-red-200 p-3 rounded-lg text-sm text-center mb-6">
@@ -50,24 +50,24 @@ export default function LoginPage() {
 
         <form onSubmit={handleSubmit} className="space-y-5">
           <div>
-            <label className="block text-xs font-medium text-slate-400 mb-1">Username</label>
+            <label className="block text-xs font-medium text-slate-500 mb-1">Username</label>
             <input
               required
               type="text"
               value={username}
               onChange={(e) => setUsername(e.target.value)}
-              className="w-full bg-slate-900 border border-slate-700 rounded-lg p-3 text-sm focus:ring-2 focus:ring-indigo-500 outline-none transition-all"
+              className="w-full bg-slate-50 border border-slate-200 rounded-lg p-3 text-sm focus:ring-2 focus:ring-indigo-500 outline-none transition-all"
               placeholder="Enter username"
             />
           </div>
           <div>
-            <label className="block text-xs font-medium text-slate-400 mb-1">Password</label>
+            <label className="block text-xs font-medium text-slate-500 mb-1">Password</label>
             <input
               required
               type="password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-              className="w-full bg-slate-900 border border-slate-700 rounded-lg p-3 text-sm focus:ring-2 focus:ring-indigo-500 outline-none transition-all"
+              className="w-full bg-slate-50 border border-slate-200 rounded-lg p-3 text-sm focus:ring-2 focus:ring-indigo-500 outline-none transition-all"
               placeholder="Enter password"
             />
           </div>
