@@ -4,7 +4,8 @@ import fs from 'fs';
 
 // Initialize the database connection
 const dbPath = path.join(process.cwd(), 'ipl_analytics.db');
-const db = new Database(dbPath, { verbose: console.log });
+const isDev = process.env.NODE_ENV === 'development';
+const db = new Database(dbPath, { verbose: isDev ? console.log : undefined });
 
 // Create matches table if it doesn't exist
 db.exec(`

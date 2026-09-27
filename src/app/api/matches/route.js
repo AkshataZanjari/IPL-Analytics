@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server';
 import db from '@/lib/db';
 import { v4 as uuidv4 } from 'uuid';
+import { matchSchema } from '@/lib/validations';
 
 // GET API endpoint to fetch all matches
 export async function GET(request) {
@@ -28,16 +29,25 @@ export async function GET(request) {
 export async function POST(request) {
   try {
     const body = await request.json();
+    
+    // Validate request body
+    const validation = matchSchema.safeParse(body);
+    if (!validation.success) {
+      return NextResponse.json({ error: 'Validation failed', details: validation.error.format() }, { status: 400 });
+    }
+    
+    const validatedData = validation.data;
+
     const newMatch = {
       id: uuidv4(),
-      date: body.date,
-      team1: body.team1,
-      team2: body.team2,
-      winner: body.winner,
-      city: body.city || 'Unknown',
-      result: body.result || 'runs',
-      result_margin: parseInt(body.result_margin) || 0,
-      target_runs: parseInt(body.target_runs) || 0,
+      date: validatedData.date,
+      team1: validatedData.team1,
+      team2: validatedData.team2,
+      winner: validatedData.winner,
+      city: validatedData.city,
+      result: validatedData.result,
+      result_margin: validatedData.result_margin,
+      target_runs: validatedData.target_runs,
     };
 
     const insert = db.prepare(`

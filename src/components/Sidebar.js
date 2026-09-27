@@ -41,9 +41,6 @@ export default function Sidebar() {
           );
         })}
       </nav>
-      <div className="p-6 border-t border-slate-800 text-center text-xs text-slate-500">
-        Portfolio Project <br/> Full-Stack Developer
-      </div>
     </div>
   );
 }

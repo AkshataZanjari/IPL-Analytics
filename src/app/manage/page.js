@@ -1,6 +1,6 @@
 'use client';
 import { useState, useEffect } from 'react';
-import { Trash2, Edit2, Plus, X, Save } from 'lucide-react';
+import { Trash2, Edit2, Plus, X, Save, Database } from 'lucide-react';
 
 export default function ManageMatches() {
   const [matches, setMatches] = useState([]);
@@ -187,7 +187,11 @@ export default function ManageMatches() {
                 </div>
                 <div>
                   <label className="block text-xs text-slate-400 mb-1">Winner *</label>
-                  <input required placeholder="Winning Team Name" value={formData.winner} onChange={e => setFormData({...formData, winner: e.target.value})} className="w-full bg-slate-900 border border-slate-700 rounded-lg p-2.5 text-sm focus:ring-2 focus:ring-indigo-500 outline-none" />
+                  <select required value={formData.winner} onChange={e => setFormData({...formData, winner: e.target.value})} className="w-full bg-slate-900 border border-slate-700 rounded-lg p-2.5 text-sm focus:ring-2 focus:ring-indigo-500 outline-none">
+                    <option value="" disabled>Select winner</option>
+                    {formData.team1 && <option value={formData.team1}>{formData.team1}</option>}
+                    {formData.team2 && <option value={formData.team2}>{formData.team2}</option>}
+                  </select>
                 </div>
                 <div>
                   <label className="block text-xs text-slate-400 mb-1">Result Type</label>

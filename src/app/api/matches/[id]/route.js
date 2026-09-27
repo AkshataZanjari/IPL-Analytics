@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server';
 import db from '@/lib/db';
+import { matchSchema } from '@/lib/validations';
 
 export async function GET(request, { params }) {
   try {
@@ -22,6 +23,14 @@ export async function PUT(request, { params }) {
     const { id } = await params;
     const body = await request.json();
     
+    // Validate request body
+    const validation = matchSchema.safeParse(body);
+    if (!validation.success) {
+      return NextResponse.json({ error: 'Validation failed', details: validation.error.format() }, { status: 400 });
+    }
+    
+    const validatedData = validation.data;
+    
     const stmt = db.prepare('SELECT * FROM matches WHERE id = ?');
     const existing = stmt.get(id);
     
@@ -38,14 +47,14 @@ export async function PUT(request, { params }) {
 
     updateStmt.run({
       id,
-      date: body.date || existing.date,
-      team1: body.team1 || existing.team1,
-      team2: body.team2 || existing.team2,
-      winner: body.winner || existing.winner,
-      city: body.city || existing.city,
-      result: body.result || existing.result,
-      result_margin: body.result_margin !== undefined ? parseInt(body.result_margin) : existing.result_margin,
-      target_runs: body.target_runs !== undefined ? parseInt(body.target_runs) : existing.target_runs,
+      date: validatedData.date,
+      team1: validatedData.team1,
+      team2: validatedData.team2,
+      winner: validatedData.winner,
+      city: validatedData.city,
+      result: validatedData.result,
+      result_margin: validatedData.result_margin,
+      target_runs: validatedData.target_runs,
     });
 
     return NextResponse.json({ message: 'Match updated successfully' }, { status: 200 });
