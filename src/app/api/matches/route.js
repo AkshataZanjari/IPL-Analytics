@@ -2,6 +2,7 @@ import { NextResponse } from 'next/server';
 import db from '@/lib/db';
 import { v4 as uuidv4 } from 'uuid';
 import { matchSchema } from '@/lib/validations';
+import { auth } from '@/auth';
 
 // GET API endpoint to fetch all matches
 export async function GET(request) {
@@ -28,6 +29,10 @@ export async function GET(request) {
 // POST API endpoint to add a new match
 export async function POST(request) {
   try {
+    const session = await auth();
+    if (!session) {
+      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+    }
     const body = await request.json();
     
     // Validate request body

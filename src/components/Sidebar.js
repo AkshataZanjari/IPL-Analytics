@@ -1,18 +1,23 @@
 'use client';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { LayoutDashboard, Search, BarChart2, GitCompare, Database } from 'lucide-react';
+import { LayoutDashboard, Search, BarChart2, GitCompare, Database, LogIn, LogOut } from 'lucide-react';
+import { useSession, signOut } from 'next-auth/react';
 
 export default function Sidebar() {
   const pathname = usePathname();
+  const { data: session } = useSession();
   
   const navItems = [
     { name: 'Dashboard', path: '/', icon: <LayoutDashboard size={20} /> },
     { name: 'Match Explorer', path: '/explorer', icon: <Search size={20} /> },
     { name: 'Team Analytics', path: '/analytics', icon: <BarChart2 size={20} /> },
     { name: 'Team Compare', path: '/compare', icon: <GitCompare size={20} /> },
-    { name: 'Manage Matches', path: '/manage', icon: <Database size={20} /> },
   ];
+
+  if (session) {
+    navItems.push({ name: 'Manage Matches', path: '/manage', icon: <Database size={20} /> });
+  }
 
   return (
     <div className="w-64 bg-slate-900 border-r border-slate-800 h-screen fixed left-0 top-0 flex flex-col">
@@ -41,6 +46,25 @@ export default function Sidebar() {
           );
         })}
       </nav>
+      <div className="p-4 border-t border-slate-800">
+        {session ? (
+          <button 
+            onClick={() => signOut({ callbackUrl: '/' })}
+            className="flex w-full items-center gap-3 px-4 py-3 rounded-xl transition-colors text-slate-400 hover:bg-slate-800 hover:text-slate-200"
+          >
+            <LogOut size={20} />
+            <span className="font-medium">Logout</span>
+          </button>
+        ) : (
+          <Link 
+            href="/login"
+            className="flex w-full items-center gap-3 px-4 py-3 rounded-xl transition-colors text-slate-400 hover:bg-slate-800 hover:text-slate-200"
+          >
+            <LogIn size={20} />
+            <span className="font-medium">Login</span>
+          </Link>
+        )}
+      </div>
     </div>
   );
 }

@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server';
 import db from '@/lib/db';
 import { matchSchema } from '@/lib/validations';
+import { auth } from '@/auth';
 
 export async function GET(request, { params }) {
   try {
@@ -20,6 +21,10 @@ export async function GET(request, { params }) {
 
 export async function PUT(request, { params }) {
   try {
+    const session = await auth();
+    if (!session) {
+      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+    }
     const { id } = await params;
     const body = await request.json();
     
@@ -66,6 +71,10 @@ export async function PUT(request, { params }) {
 
 export async function DELETE(request, { params }) {
   try {
+    const session = await auth();
+    if (!session) {
+      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+    }
     const { id } = await params;
     
     const stmt = db.prepare('DELETE FROM matches WHERE id = ?');
