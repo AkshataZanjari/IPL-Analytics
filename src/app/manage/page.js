@@ -116,7 +116,7 @@ export default function ManageMatches() {
           <h1 className="text-3xl font-bold">Manage Matches</h1>
           <p className="text-slate-500 mt-2">Add, edit, or delete IPL match records (CRUD)</p>
         </div>
-        <button onClick={openAddModal} className="flex items-center gap-2 bg-indigo-600 hover:bg-indigo-700 transition-colors px-4 py-2 rounded-lg font-medium shadow-lg shadow-indigo-900/20">
+        <button onClick={openAddModal} className="flex items-center gap-2 bg-indigo-600 hover:bg-indigo-700 text-white transition-colors px-4 py-2 rounded-lg font-medium shadow-lg shadow-indigo-900/20">
           <Plus size={18} /> Add Match
         </button>
       </header>
@@ -233,7 +233,7 @@ export default function ManageMatches() {
               
               <div className="mt-8 flex justify-end gap-3 pt-6 border-t border-slate-200">
                 <button type="button" onClick={() => setIsModalOpen(false)} className="px-5 py-2.5 rounded-lg text-slate-600 hover:bg-slate-100 transition-colors font-medium">Cancel</button>
-                <button type="submit" className="px-5 py-2.5 bg-indigo-600 hover:bg-indigo-700 rounded-lg font-medium transition-colors shadow-lg shadow-indigo-900/20 flex items-center gap-2">
+                <button type="submit" className="px-5 py-2.5 bg-indigo-600 hover:bg-indigo-700 text-white rounded-lg font-medium transition-colors shadow-lg shadow-indigo-900/20 flex items-center gap-2">
                   <Save size={18} /> {editingId ? 'Update Match' : 'Save Match'}
                 </button>
               </div>
